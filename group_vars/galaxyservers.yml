@@ -100,3 +100,7 @@ nginx_conf_http:
       image/png
       image/svg+xml
       image/x-icon
+
+# ansible-slurm
+slurm_roles: ['controller', 'exec']
+slurm_user: galaxy
