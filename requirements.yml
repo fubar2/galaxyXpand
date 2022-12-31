@@ -10,3 +10,6 @@
   version: 2.0.0
 - src: uchida.miniconda
   version: 0.3.0
+- src: https://github.com/ARTbio/ansible-slurm.git
+  name: ansible-slurm
+  version: main
