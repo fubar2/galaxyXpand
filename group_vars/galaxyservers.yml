@@ -13,6 +13,7 @@ postgresql_objects_databases:
 postgresql_backup_dir: /data/backups
 postgresql_backup_local_dir: "{{ '~postgres' | expanduser }}/backups"
 # Galaxy
+galaxy_additional_venv_packages: drmaa
 galaxy_create_user: true
 galaxy_separate_privileges: true
 # galaxy_manage_paths: true

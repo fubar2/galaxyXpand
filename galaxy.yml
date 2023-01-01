@@ -2,12 +2,31 @@
 - hosts: galaxyservers
   become: true
   become_user: root
+
   vars_files:
     - group_vars/secret.yml
+
   pre_tasks:
+
+    - name: Add custom slurm PPA (used for Slurm DRMAA package)
+      apt_repository: 
+        repo: ppa:natefoo/slurm-drmaa
+        state: present
+        update_cache: yes
+
     - name: Install Dependencies
       package:
-        name: ['acl', 'bzip2', 'git', 'make', 'python3-psycopg2', 'tar', 'virtualenv']
+        name:
+          - 'acl'
+          - 'bzip2'
+          - 'git'
+          - 'make'
+          - 'python3-psycopg2'
+          -  'tar'
+          - 'virtualenv'
+          - slurm-wlm
+          - slurm-drmaa-dev
+          - python-psutil
   roles:
     - galaxyproject.postgresql
     - role: galaxyproject.postgresql_objects
