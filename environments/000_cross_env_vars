@@ -1,0 +1,14 @@
+---
+# Python 3 support
+pip_virtualenv_command: /usr/bin/python3 -m virtualenv
+pip_package: python3-pip
+
+# PostgreSQL
+postgresql_objects_users:
+  - name: galaxy
+postgresql_objects_databases:
+  - name: galaxy
+    owner: galaxy
+# PostgreSQL Backups
+postgresql_backup_dir: /data/backups
+postgresql_backup_local_dir: "{{ '~postgres' | expanduser }}/backups"

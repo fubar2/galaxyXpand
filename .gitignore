@@ -2,7 +2,7 @@
 .DS_Store
 *.pyc
 docs/html
-
+roles/
 roles/ensure_postgresql_up
 roles/galaxyprojectdotorg.galaxy
 roles/galaxyprojectdotorg.galaxy-extras
