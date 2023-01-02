@@ -1,15 +1,24 @@
-<?xml version="1.0"?>
 <job_conf>
     <plugins>
+        <plugin id="slurm" type="runner" load="galaxy.jobs.runners.slurm:SlurmJobRunner" workers="4">
+            <param id="drmaa_library_path">/usr/lib/slurm-drmaa/lib/libdrmaa.so</param>
+        </plugin>
         <plugin id="local" type="runner" load="galaxy.jobs.runners.local:LocalJobRunner" workers="4"/>
     </plugins>
     <destinations default="local">
         <destination id="local" runner="local"/>
         <destination id="gce_multicore" runner="local">
-          <param id="local_slots">4</param> <!-- Specify GALAXY_SLOTS for local jobs. -->
+            <param id="local_slots">4</param> <!-- Specify GALAXY_SLOTS for local jobs. -->
         </destination>
         <destination id="bowtie" runner="local">
-          <param id="local_slots">4</param> <!-- Specify GALAXY_SLOTS for local jobs. -->
+             <param id="local_slots">4</param> <!-- Specify GALAXY_SLOTS for local jobs. -->
+        </destination>
+        <destination id="cluster_4" runner="slurm">
+             <env file="/home/galaxy/galaxy/.venv/bin/activate" />
+             <param id="type">python</param>
+             <param id="nativeSpecification">--partition=debug --ntasks=4</param>
+             <param id="docker_sudo">false</param>
+             <param id="docker_volumes_from">galaxy</param>
         </destination>
     </destinations>
 
@@ -40,6 +49,7 @@
         <tool id="small_rna_maps" destination="gce_multicore"/>
         <tool id="sr_bowtie_dataset_annotation" destination="bowtie"/>
         <tool id="bowtie_index_builder_data_manager" destination="gce_multicore"/>
+        <tool id="retrieve_fasta_from_NCBI" destination="cluster_4"/>
    </tools>
 
 </job_conf>
