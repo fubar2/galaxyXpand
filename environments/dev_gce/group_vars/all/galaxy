@@ -40,7 +40,6 @@ galaxy_config:
     file_path: files
     check_migrate_tools: false
     tool_data_path: "{{ galaxy_server_dir }}/tool-data"
-    id_secret: "{{ vault_id_secret }}"
     job_config_file: "{{ galaxy_config_dir }}/job_conf.xml"
   gravity:
     galaxy_root: "{{ galaxy_server_dir }}"
@@ -65,7 +64,7 @@ galaxy_config:
 
 # deploy galaxy configuration files
 galaxy_config_templates:
-  - src: templates/galaxy/config/job_conf.xml.j2
+  - src: environments/dev_gce/templates/galaxy/config/job_conf.xml.j2
     dest: "{{ galaxy_config.galaxy.job_config_file }}"
 
 
@@ -73,6 +72,7 @@ galaxy_config_templates:
 galaxy_manage_systemd: true
 
 # NGINX
+nginx_server_src_dir: environments/dev_gce/templates/nginx/
 nginx_selinux_allow_local_connections: true
 nginx_servers:
   - galaxy
