@@ -40,3 +40,17 @@
     - galaxyproject.nginx
     - role: ansible-slurm
       become: true
+
+  post_tasks:
+
+    - name: reload nginx at end
+      service:
+        name: nginx
+        state: reloaded
+      when: not nginx_supervisor
+
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
+      when: not nginx_supervisor
