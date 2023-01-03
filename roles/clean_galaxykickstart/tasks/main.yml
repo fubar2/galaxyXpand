@@ -39,13 +39,13 @@
 #    purge: true
 
 - name: change owner and group of /etc/munge/munge.key
-  ansible.builtin.file::
+  ansible.builtin.file:
     path: /etc/munge/munge.key
     owner: munge
     group: munge
 
 - name: change owner and group of /run/munge
-  ansible.builtin.file::
+  ansible.builtin.file:
     path: /run/munge
     owner: munge
     group: munge
