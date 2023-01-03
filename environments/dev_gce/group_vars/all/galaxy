@@ -24,7 +24,8 @@ galaxy_config:
     brand: "🧬🔬🚀"
     admin_users: admin@example.org
     database_connection: "postgresql:///galaxy?host=/var/run/postgresql"
-    file_path: files
+    file_path: datasets
+    object_store_store_by: id
     check_migrate_tools: false
     tool_data_path: "{{ galaxy_server_dir }}/tool-data"
     job_config_file: "{{ galaxy_config_dir }}/job_conf.xml"
