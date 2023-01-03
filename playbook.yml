@@ -28,6 +28,7 @@
           - slurm-drmaa-dev
           - python-psutil
   roles:
+    - clean_galaxykickstart
     - galaxyproject.postgresql
     - role: galaxyproject.postgresql_objects
       become: true

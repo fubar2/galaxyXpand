@@ -27,20 +27,25 @@
     state: absent
     purge: true
 
-- name: remove ppa:natefoo/slurm-drmaa (will be reinstalled)
-  ansible.builtin.apt_repository:
-    repo: ppa:natefoo/slurm-drmaa
-    state: absent
+#- name: remove ppa:natefoo/slurm-drmaa (will be reinstalled)
+#  ansible.builtin.apt_repository:
+#    repo: ppa:natefoo/slurm-drmaa
+#    state: absent
+#
+#- name: Remove slurm-drmaa (will be reinstalled)
+#  ansible.builtin.apt:
+#    name: slurm-drmaa
+#    state: absent
+#    purge: true
 
-- name: Remove slurm-drmaa (will be reinstalled)
-  ansible.builtin.apt:
-    name: slurm-drmaa
-    state: absent
-    purge: true
+- name: change owner and group of /etc/munge/munge.key
+  ansible.builtin.file::
+    path: /etc/munge/munge.key
+    owner: munge
+    group: munge
 
-- name: Remove munge (will be reinstalled)
-  ansible.builtin.apt:
-    name: munge
-    state: absent
-    purge: true
-
+- name: change owner and group of /run/munge
+  ansible.builtin.file::
+    path: /run/munge
+    owner: munge
+    group: munge
