@@ -2,15 +2,14 @@
 .DS_Store
 *.pyc
 docs/html
-roles/
-roles/ensure_postgresql_up
-roles/galaxyprojectdotorg.galaxy
-roles/galaxyprojectdotorg.galaxy-extras
-roles/galaxyprojectdotorg.galaxy-os
-roles/galaxyprojectdotorg.galaxy-tools
-roles/galaxyprojectdotorg.trackster
-roles/natefoo.postgresql_objects
-roles/miniconda-role
+
+roles/ansible-slurm/
+roles/galaxyproject.galaxy/
+roles/galaxyproject.nginx/
+roles/galaxyproject.postgresql/
+roles/galaxyproject.postgresql_objects/
+roles/geerlingguy.pip/
+roles/uchida.miniconda/
 
 
 # Byte-compiled / optimized / DLL files
