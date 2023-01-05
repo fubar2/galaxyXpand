@@ -1,10 +1,7 @@
 ---
-- hosts: dev_gce
+- hosts: all
   become: true
   become_user: root
-
-  vars_files:
-#    - group_vars/secret.yml
 
   pre_tasks:
 
@@ -28,8 +25,7 @@
           - slurm-drmaa-dev
           - python-psutil
   roles:
-    - role: clean_galaxykickstart
-      when: galaxykickstart_to_gravity
+    - clean_galaxykickstart
     - galaxyproject.postgresql
     - role: galaxyproject.postgresql_objects
       become: true
@@ -44,6 +40,12 @@
       become: true
 
   post_tasks:
+
+    - name: copy logo image of the instance to static/images
+      copy:
+        src: environments/dev_mississippi/files/images/biotechno_M2_logo.png
+        dest: "{{ galaxy_server_dir }}/static/images/biotechno_M2_logo.png"
+        mode: "0644"
 
     - name: reload nginx at end
       service:
