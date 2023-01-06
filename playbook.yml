@@ -41,18 +41,6 @@
 
   post_tasks:
 
-    - name: copy logo image of the instance to static/images
-      copy:
-        src: environments/dev_mississippi/files/images/biotechno_M2_logo.png
-        dest: "{{ galaxy_server_dir }}/static/images/biotechno_M2_logo.png"
-        mode: "0644"
-
-    - name: reload nginx at end
-      service:
-        name: nginx
-        state: reloaded
-      when: not nginx_supervisor
-
     - name: restart nginx
       service:
         name: nginx
