@@ -58,4 +58,9 @@ server {
     location /favicon.ico {
         alias {{ galaxy_server_dir }}/static/favicon.ico;
     }
+
+    location /rstudio/ {
+        proxy_pass http://127.0.0.1:8787/;
+    }
+
 }
