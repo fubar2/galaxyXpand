@@ -17,7 +17,7 @@ galaxy_root: /home/galaxy
 galaxy_user: {name: galaxy, shell: /bin/bash}
 galaxy_commit_id: release_22.05
 galaxy_force_checkout: true
-galaxy_tool_dependency_dir: "{{ galaxy_server_dir }}/../tool_dependencies"
+galaxy_tool_dependency_dir: "{{ galaxy_root }}/tool_dependencies"
 galaxy_manage_cleanup: yes  # Install a cron job to clean up Galaxy framework and job execution temporary
 miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda"
 miniconda_version: 4.7.12
