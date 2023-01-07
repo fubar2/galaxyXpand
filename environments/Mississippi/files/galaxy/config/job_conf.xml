@@ -2,20 +2,17 @@
 <!-- Do not modify this file, it will we overwritten by ansible galaxykickstart -->
 <job_conf>
     <plugins workers="4">
+        <plugin id="local" type="runner" load="galaxy.jobs.runners.local:LocalJobRunner"/>
         <plugin id="slurm" type="runner" load="galaxy.jobs.runners.slurm:SlurmJobRunner">
             <param id="drmaa_library_path">/usr/lib/slurm-drmaa/lib/libdrmaa.so</param>
         </plugin>
-        <plugin id="local" type="runner" load="galaxy.jobs.runners.local:LocalJobRunner"/>
     </plugins>
-    <!-- The default handler can be changed by specifying the GALAXY_HANDLERS_DEFAULT environment variable. -->
-    <handlers default="handlers">
-        <handler id="handler0" tags="handlers"/>
-        <handler id="handler1" tags="handlers"/>
-        <handler id="handler2" tags="handlers"/>
-        <handler id="handler3" tags="handlers"/>
-    </handlers>
 
-    <destinations default_from_environ="GALAXY_DESTINATIONS_DEFAULT" default="single">
+    <destinations default="local">
+        <destination id="local" runner="local"/>
+        <destination id="local_multicore" runner="local">
+            <param id="local_slots">4</param> <!-- Specify GALAXY_SLOTS for local jobs. -->
+        </destination>
         <destination id="single" runner="slurm">
             <env file="/home/galaxy/galaxy/.venv/bin/activate"/>
             <param id="enabled" from_environ="GALAXY_RUNNERS_ENABLE_SLURM">true</param>

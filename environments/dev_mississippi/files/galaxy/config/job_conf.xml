@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <job_conf>
-    <plugins>
-        <plugin id="local" type="runner" load="galaxy.jobs.runners.local:LocalJobRunner" workers="4"/>
-        <plugin id="slurm" type="runner" load="galaxy.jobs.runners.slurm:SlurmJobRunner" workers="4">
+    <plugins workers="4">
+        <plugin id="local" type="runner" load="galaxy.jobs.runners.local:LocalJobRunner"/>
+        <plugin id="slurm" type="runner" load="galaxy.jobs.runners.slurm:SlurmJobRunner">
             <param id="drmaa_library_path">/usr/lib/slurm-drmaa/lib/libdrmaa.so</param>
         </plugin>
     </plugins>
