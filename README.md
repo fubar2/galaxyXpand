@@ -1,8 +1,15 @@
-# galaxy-expansion
-Ansible Playbook for Galaxy server deployment
+# galaxyXpand
 
-! Experimental
+Our Next Generation of Ansible Playbook for Galaxy server deployment
 
-A production Ansible playbook for Galaxy deployment can be found at
+Documentation is coming soon.
 
-https://github.com/artbio/galaxykickstart (galaxy_release <= 22.01)
+Requirements
+```
+
+Python >= 3.7 
+ansible >= 2.10.1
+```
+
+Our previous [GalaxyKickStart](https://github.com/artbio/galaxykickstart) Ansible playbook
+supports the deployment of Galaxy releases <= 22.01
