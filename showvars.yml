@@ -3,56 +3,13 @@
   hosts: all
  
   tasks:
-    - name: Print Module Variables
-      vars: 
-        msg: |
-          Module Variables ("vars"):
-          --------------------------------
-          {{ vars | to_nice_json }} 
-    
-      debug: 
-        msg: "{{ msg.split('\n') }}"       
-      tags: debug_info
-
-    - name: Print Environment Variables
-      vars: 
-        msg: |
-          Environment Variables ("environment"):
-          --------------------------------
-          {{ environment | to_nice_json }} 
-    
-      debug: 
-        msg: "{{ msg.split('\n') }}"       
-      tags: debug_info
-
-    - name: Print GROUP NAMES Variables
-      vars: 
-        msg: |
-          GROUP NAMES Variables ("group_names"):
-          --------------------------------
-          {{ group_names | to_nice_json }}
-    
-      debug: 
-        msg: "{{ msg.split('\n') }}"       
-      tags: debug_info
-
-    - name: Print GROUPS Variables 
-      vars: 
-        msg: |
-          GROUPS Variables ("groups"):
-          --------------------------------
-          {{ groups | to_nice_json }}
-    
-      debug: 
-        msg: "{{ msg.split('\n') }}"       
-      tags: debug_info
 
     - name: Print HOST Variables
       vars: 
         msg: |
           HOST Variables ("hostvars"):
           --------------------------------
-          {{ hostvars | to_nice_json }} 
+          {{ hostvars | to_nice_yaml }} 
     
       debug: 
         msg: "{{ msg.split('\n') }}"       
