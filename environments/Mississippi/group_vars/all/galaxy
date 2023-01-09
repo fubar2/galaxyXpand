@@ -126,11 +126,11 @@ galaxy_config_files:
   - src: environments/Mississippi/files/galaxy/html/welcome.html
     dest: "{{ galaxy_server_dir }}/static/welcome.html"
   - src: environments/Mississippi/files/galaxy/html/images/ARTbio_mississippi_screen.jpg
-    dest: "{{ galaxy_server_dir }}/static/ARTbio_mississippi_screen.jpg"
+    dest: "{{ galaxy_server_dir }}/static/images/ARTbio_mississippi_screen.jpg"
   - src: environments/Mississippi/files/galaxy/html/images/IBPS_logo.jpg
-    dest: "{{ galaxy_server_dir }}/static/IBPS_logo.jpg"
+    dest: "{{ galaxy_server_dir }}/static/images/IBPS_logo.jpg"
   - src: environments/Mississippi/files/galaxy/html/images/mississippi_logo.png
-    dest: "{{ galaxy_server_dir }}/static/mississippi_logo.png"
+    dest: "{{ galaxy_server_dir }}/static/images/mississippi_logo.png"
 
 # systemd
 galaxy_manage_systemd: true
