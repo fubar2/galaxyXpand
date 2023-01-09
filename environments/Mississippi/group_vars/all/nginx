@@ -1,6 +1,6 @@
 ---
 # NGINX
-nginx_server_src_dir: environments/dev_mississippi/templates/nginx/
+nginx_server_src_dir: environments/Mississippi/templates/nginx/
 nginx_ssl_servers:
   - galaxy
 nginx_enable_default_server: false
