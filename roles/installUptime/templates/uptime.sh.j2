@@ -3,7 +3,7 @@
 while true
 do
   echo `date +"%Y/%m/%d %H:%M:%S"; cat /proc/loadavg` >> {{ galaxy_gravity_state_dir }}/log/uptime.log
-  tail -n 4032 /home/galaxy/uptime.log > {{ galaxy_gravity_state_dir }}/log/lastuptime.log
+  tail -n 4032 {{ galaxy_gravity_state_dir }}/log/uptime.log > {{ galaxy_gravity_state_dir }}/log/lastuptime.log
   Rscript {{ galaxy_gravity_state_dir }}/uptime.R {{ galaxy_gravity_state_dir }}/log/lastuptime.log 2>&1 >/dev/null
   sleep 300
 done
