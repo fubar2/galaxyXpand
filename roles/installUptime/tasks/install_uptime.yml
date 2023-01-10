@@ -8,7 +8,7 @@
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-    force: no
+    force: yes
     mode: "{{ galaxy_config_perms }}"
   with_items: "{{ uptime_templates }}"
 
