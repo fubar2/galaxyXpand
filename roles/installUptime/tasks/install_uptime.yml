@@ -12,7 +12,7 @@
     mode: "{{ galaxy_config_perms }}"
   with_items: "{{ uptime_templates }}"
 
-- name: galaxyctl update
-  command: "{{ galaxy_venv_dir }}/bin/galaxyctl update"
+- name: galaxyctl supervisorctl reload
+  command: "{{ galaxy_venv_dir }}/bin/galaxyctl supervisorctl reload"
   environment:
     GRAVITY_STATE_DIR: "{{ galaxy_gravity_state_dir }}"
