@@ -1,0 +1,29 @@
+#!/usr/bin/env Rscript
+# SYNTAX
+# uptime.R <uptime.log>
+
+#gets arguments
+args = commandArgs(TRUE)
+uptime = read.delim(args[1], header = F, sep = ' ')
+uptime = tail(uptime, 2016)
+colnames(uptime) = c("date", "time", "workload1", "workload5", "workload15", "procWait", "processes")
+uptime$fulltime = paste(uptime$date, uptime$time, sep=" " )
+uptime$fulltime =  as.POSIXct(uptime$fulltime)
+
+# plot
+png("{{ galaxy_server_dir }}/static/images/uptime.png",  width = 900, height = 300)
+op <- par(mar = c(6,4,1,1))
+plot(workload5 ~ fulltime, data = uptime, pch = 20, type = "s", ylim = c(0, max(uptime$workload5) + 2),
+     xaxt = "n", yaxt = "n", xlab = "", ylab = "Workload over last 5 min")
+abline(h= {{ ansible_processor_nproc }}, col = "red")
+abline(h= {{ (ansible_processor_nproc * 0.75) | int }}, col = "orange")
+abline(h= {{ (ansible_processor_nproc / 2) | int }}, col = "green")
+abline(h= {{ (ansible_processor_nproc / 4) | int }}, col = "grey")
+at = seq(tail(uptime$fulltime, 1), head(uptime$fulltime, 1), by = "-6 hour")
+lab <- format(at,format = "%m/%d %Hh%M")
+axis(2, cex.axis = 0.8)
+axis(1, at = at, labels = FALSE)
+text(x = at, y = par()$usr[3] -0.1 * (par()$usr[4] - par()$usr[3]), labels = lab,
+     srt = 45, adj = 1, xpd = TRUE, cex = 0.8)
+par(op)
+dev.off()

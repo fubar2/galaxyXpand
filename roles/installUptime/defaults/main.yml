@@ -1,0 +1,8 @@
+install_uptime: no
+uptime_templates:
+  - src: uptime.conf.j2
+    dest: "{{ galaxy_gravity_state_dir }}/supervisor/supervisord.conf.d/_default_.d/uptime.conf"
+  - src: uptime.R.j2
+    dest: "{{ galaxy_gravity_state_dir }}/uptime.R"
+  - src: uptime.sh.j2
+    dest: "{{ galaxy_gravity_state_dir }}/uptime.sh"
