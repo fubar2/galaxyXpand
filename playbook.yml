@@ -1,12 +1,12 @@
 ---
-- hosts: all
+- hosts: galaxyservers
   become: true
   become_user: root
 
   pre_tasks:
 
     - name: Add custom slurm PPA (used for Slurm DRMAA package)
-      apt_repository: 
+      apt_repository:
         repo: ppa:natefoo/slurm-drmaa
         state: present
         update_cache: yes
@@ -24,21 +24,33 @@
           - slurm-wlm
           - slurm-drmaa-dev
           - python-psutil
+          - libbz2-dev
+          - liblzma-dev
   roles:
     - clean_galaxykickstart
+
+    - geerlingguy.pip
     - galaxyproject.postgresql
     - role: galaxyproject.postgresql_objects
       become: true
       become_user: postgres
-    - geerlingguy.pip
-    - galaxyproject.galaxy
+    - role: galaxyproject.galaxy
     - role: uchida.miniconda
       become: true
       become_user: "{{ galaxy_user.name }}"
     - galaxyproject.nginx
-    - role: ansible-slurm
-      become: true
+    - galaxyproject.slurm
     - installUptime
+    - gantsign.golang
+    - cyverse-ansible.singularity
+    - usegalaxy_eu.rabbitmq
+    - galaxyproject.proftpd
+    - galaxyproject.tusd
+    - galaxyproject.cvmfs
+    - galaxyproject.gxadmin
+    - dj-wasabi.telegraf
+
+
 
   post_tasks:
 
