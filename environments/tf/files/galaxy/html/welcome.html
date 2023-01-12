@@ -1,54 +1,50 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="stylesheet" href="style/base.css" type="text/css" />
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/static/style/base.css" type="text/css" />
 </head>
-<body>
-    <div class="document">
+<body style="margin: 0">
 
+    <div class="jumbotron">
+        <div class="container">
+            <table><tr><td>
+            <h2>Hello, your <strong>ArtBIO ansible</strong> Galaxy server is running!</h2>
+            To customize this page, edit the <code>welcome.html</code> page in your <code>[galaxy_server]/static/</code> directory.
 
-        <p align="center">
-            <img src="images/mississippi_logo.png" width="400" />
+            <br>
+            <a target="_blank" href="https://wiki.galaxyproject.org/Admin/Config" class="btn btn-primary btn-lg">Configuring Galaxy »</a>
+            <a target="_blank" href="https://wiki.galaxyproject.org/Admin/Tools/AddToolFromToolShedTutorial" class="btn btn-primary btn-lg">Installing Tools »</a>
+            <a target="_parent" href="/tours/core.galaxy_ui" class="btn btn-primary btn-lg">Guided Tour »</a>
+            </td><td>
+              <!--  <div align=center>
+                    <img src="./welcome_image.png" width="90%" height="90%" />
+                </div>
+               -->
+        </td></tr></table>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <p class="lead">
+            <a target="_blank" class="reference" href="http://galaxyproject.org/">
+            Galaxy</a> is an open platform for supporting data intensive
+            research. Galaxy is developed by <a target="_blank" class="reference" href="http://wiki.galaxyproject.org/GalaxyTeam">The Galaxy Team</a>
+            with the support of  <a target="_blank" class="reference" href="https://github.com/galaxyproject/galaxy/blob/dev/CONTRIBUTORS.md">many contributors</a>.
+            The Galaxy Docker project is supported by the University of Freiburg, part of de.NBI.
         </p>
-        <div class="row">
-            <div class="col-sm-6" align="center">
-                <a target="_blank" href="http://www.ibps.upmc.fr/en"><img src="images/IBPS_logo.jpg" width="200" /></a>
-            </div>
-            <div class="col-sm-6"  align="center">
-                <a target="_blank" href="https://artbio.fr"><img src="images/ARTbio_mississippi_screen.jpg" alt="ARTbio" width="200"/></a>
-            </div>
-        </div>
-        <hr/>
-        <!-- -->
 
-        <div class="alert alert-success" style="margin-top: 0.5em">
-        <div>
-               <p><h3>
-                  Error reporting using automated emails has been fixed.
-                  You can report your mistakes and encountered bugs again!
-               </h3></p>
-               <p>TF is deployed using
-                  <a href="https://github.com/ARTbio/galaxyXpand" target="_blank"> galaxyXpand.</a>
-               </p>
-
-        </div>
-
-        </div>
-
-        <!-- -->
-        <div class="row">
-            <div class="col-sm-6" align="center">
-                <p>Server workload over 7 days</p>
-                <img src="images/uptime.png" width="400" />
-            <br>
-            <br>
-             </div>
-        </div>
-       <hr/>
-       <a target="_blank" class="reference" href="http://galaxyproject.org/">Galaxy</a> is an open, web-based platform for data intensive biomedical research.  The <a target="_blank" class="reference" href="http://wiki.galaxyproject.org/GalaxyTeam">Galaxy team</a> is a part of <a target="_blank" class="reference" href="http://www.bx.psu.edu">BX</a> at <a target="_blank" class="reference" href="http://www.psu.edu">Penn State</a>, and the <a target="_blank" class="reference" href="http://www.bio.jhu.edu/">Biology</a> department at <a target="_blank" class="reference" href="http://www.jhu.edu/">Johns Hopkins University</a>.  The <a target="_blank" class="reference" href="http://galaxyproject.org/">Galaxy Project</a> is supported in part by <a target="_blank" class="reference" href="http://www.genome.gov">NHGRI</a>, <a target="_blank" class="reference" href="http://www.nsf.gov">NSF</a>, <a target="_blank" class="reference" href="http://www.huck.psu.edu">The Huck Institutes of the Life Sciences</a>, <a target="_blank" class="reference" href="http://www.ics.psu.edu">The Institute for CyberScience at Penn State</a>, and <a target="_blank" class="reference" href="http://www.jhu.edu/">Johns Hopkins</a>.</p>
+        <footer>
+            The <a target="_blank" class="reference" href="http://galaxyproject.org/">Galaxy Project</a>
+            is supported in part by <a target="_blank" class="reference" href="http://www.genome.gov">NHGRI</a>,
+            <a target="_blank" class="reference" href="http://www.nsf.gov">NSF</a>,
+            <a target="_blank" class="reference" href="http://www.huck.psu.edu">The Huck Institutes of the Life Sciences</a>,
+            <a target="_blank" class="reference" href="http://www.ics.psu.edu">The Institute for CyberScience at Penn State</a>,
+            and <a target="_blank" class="reference" href="http://www.jhu.edu/">Johns Hopkins University</a>.
+        </footer>
 
     </div>
+
 </body>
 </html>

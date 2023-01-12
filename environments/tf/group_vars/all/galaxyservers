@@ -30,6 +30,9 @@ miniconda_manage_dependencies: false
 
 galaxy_config:
   galaxy:
+    sanitize_all_html: false
+    enable_tool_shed_check: true
+    hours_between_check: 12
     shed_data_manager_config_file:  "/home/{{ galaxy_user.name }}/shed_data_manager_conf.xml"
     statsd_host: localhost
     statsd_influxdb: true
@@ -120,15 +123,6 @@ galaxy_config_files:
   - src: "{{ gcf }}/galaxy/config/reports.yml"
     dest: "{{ galaxy_reports_path }}"
 
-
-  #- src:  "{{ gcf }}/galaxy/html/images/ARTbio_mississippi_screen.jpg"
-    #dest: "{{ galaxy_server_dir }}/static/images/ARTbio_mississippi_screen.jpg"
-  #- src:  "{{ gcf }}/galaxy/config/job_conf.xml" environments/Mississippi/files/galaxy/html/images/IBPS_logo.jpg
-    #dest: "{{ galaxy_server_dir }}/static/images/IBPS_logo.jpg"
-  #- src:  "{{ gcf }}/galaxy/config/job_conf.xml" environments/Mississippi/files/galaxy/html/images/mississippi_logo.png
-    #dest: "{{ galaxy_server_dir }}/static/images/mississippi_logo.png"
-
-
 #galaxy_local_tools:
 #- testing.xml
 
@@ -177,7 +171,7 @@ nginx_conf_ssl_certificate_key: /etc/ssl/user/privkey-nginx.pem
 slurm_roles: ['controller', 'exec'] # Which roles should the machine play? exec are execution hosts.
 slurm_nodes:
 - name: localhost # Name of our host
-  CPUs: 2         # Here you would need to figure out how many cores your machine has. For this training we will use 2 but in real life, look at `htop` or similar.
+  CPUs: 8         # Here you would need to figure out how many cores your machine has. For this training we will use 2 but in real life, look at `htop` or similar.
 slurm_config:
   SlurmdParameters: config_overrides   # Ignore errors if the host actually has cores != 2
   SelectType: select/cons_res
@@ -243,7 +237,7 @@ rabbitmq_users:
     password: "{{ vault_rabbitmq_password_vhost }}"
     vhost: /pulsar/galaxy_au
 
-# Proftpd:
+# Proftpd
 proftpd_galaxy_auth: yes
 galaxy_ftp_upload_dir: "{{ galaxy_config.galaxy.ftp_upload_dir }}"
 proftpd_display_connect: |
@@ -292,4 +286,10 @@ tusd_instances:
       - "-upload-dir={{ galaxy_config.galaxy.tus_upload_store }}"
       - "-hooks-http=https://{{ inventory_hostname }}/api/upload/hooks"
       - "-hooks-http-forward-headers=X-Api-Key,Cookie"
+
+# CVMFS vars
+cvmfs_role: client
+galaxy_cvmfs_repos_enabled: config-repo
+cvmfs_quota_limit: 10000
+cvmfs_cache_base: "{{ galaxy_root }}/cvmfs_cache"
 
