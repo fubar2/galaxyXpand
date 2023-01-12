@@ -1,0 +1,63 @@
+<job_conf>
+    <plugins workers="4">
+        <plugin id="local_plugin" type="runner" load="galaxy.jobs.runners.local:LocalJobRunner"/>
+        <plugin id="slurm" type="runner" load="galaxy.jobs.runners.slurm:SlurmJobRunner"/>
+        <plugin id="pulsar_runner" type="runner" load="galaxy.jobs.runners.pulsar:PulsarMQJobRunner" >
+            <param id="amqp_url">pyamqp://galaxy_au:{{ vault_rabbitmq_password_vhost }}@localhost:5671/{{ rabbitmq_vhosts[0] }}?ssl=1</param>
+            <param id="amqp_ack_republish_time">1200</param>
+            <param id="amqp_acknowledge">True</param>
+            <param id="amqp_consumer_timeout">2.0</param>
+            <param id="amqp_publish_retry">True</param>
+            <param id="amqp_publish_retry_max_retries">60</param>
+            <param id="galaxy_url">https://{{ inventory_hostname }}</param>
+            <param id="manager">_default_</param>
+        </plugin>
+    </plugins>
+    <destinations default="singularity">
+        <destination id="local_destination" runner="local_plugin"/>
+        <destination id="pulsar" runner="pulsar_runner" >
+            <param id="default_file_action">remote_transfer</param>
+            <param id="dependency_resolution">remote</param>
+            <param id="jobs_directory">/mnt/pulsar/files/staging</param>
+            <param id="persistence_directory">/mnt/pulsar/files/persisted_data</param>
+            <param id="remote_metadata">False</param>
+            <param id="rewrite_parameters">True</param>
+            <param id="transport">curl</param>
+            <param id="outputs_to_working_directory">False</param>
+        </destination>
+        <destination id="slurm" runner="slurm">
+            <param id="singularity_enabled">true</param>
+            <param id="singularity_run_extra_arguments"> -p </param>
+            <!-- see https://cvmfs.readthedocs.io/en/stable/cpt-configure.html -->
+            <param id="singularity_volumes">$defaults,/cvmfs:ro</param>
+            <env id="LC_ALL">C</env>
+            <env id="SINGULARITY_CACHEDIR">/tmp/singularity</env>
+            <env id="SINGULARITY_TMPDIR">/tmp</env>
+        </destination>
+        <destination id="slurm-2c" runner="slurm">
+            <param id="nativeSpecification">--nodes=1 --ntasks=1 --cpus-per-task=2</param>
+            <param id="singularity_enabled">true</param>
+            <param id="singularity_run_extra_arguments"> -p </param>
+            <!-- see https://cvmfs.readthedocs.io/en/stable/cpt-configure.html -->
+            <param id="singularity_volumes">$defaults,/cvmfs:ro</param>
+            <env id="LC_ALL">C</env>
+            <env id="SINGULARITY_CACHEDIR">/tmp/singularity</env>
+            <env id="SINGULARITY_TMPDIR">/tmp</env>
+        </destination>
+        <destination id="singularity" runner="local_plugin">
+            <param id="singularity_enabled">true</param>
+            <param id="singularity_run_extra_arguments"> -p </param>
+            <!-- see https://cvmfs.readthedocs.io/en/stable/cpt-configure.html -->
+            <param id="singularity_volumes">$defaults,/cvmfs:ro</param>
+            <!-- Ensuring a consistent collation environment is good for reproducibility. -->
+            <env id="LC_ALL">C</env>
+            <!-- The cache directory holds the docker containers that get converted. -->
+            <env id="SINGULARITY_CACHEDIR">/tmp/singularity</env>
+            <!-- Singularity uses a temporary directory to build the squashfs filesystem. -->
+            <env id="SINGULARITY_TMPDIR">/tmp</env>
+        </destination>
+    </destinations>
+    <tools>
+        <tool id="upload1" destination="slurm"/>
+    </tools>
+</job_conf>
