@@ -12,7 +12,7 @@ RUN apt-get update  && \
     apt-get install -qq --no-install-recommends \
     apt-transport-https software-properties-common \
     apt-utils proftpd proftpd-mod-pgsql git nano \
-    locales python3-pip
+    locales python3-pip dirmngr
 
 RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
     locale-gen
