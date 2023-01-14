@@ -47,6 +47,6 @@ EXPOSE :9002
 
 RUN apt update && \
     ansible-galaxy install -r requirements.yml -p roles -f && \
-    ansible-playbook -i environments/dev_gce/hosts -c local playbook.yml
+    ansible-playbook -i environments/Docker/hosts -c local playbook.yml
 
 # CMD ["bash", "/setup/inventory_files/docker"]

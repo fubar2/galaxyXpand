@@ -10,5 +10,6 @@ curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh ./get-docker.sh
 
 git clone https://github.com/artbio/galaxyXpand
-cd galaxyXpand
-sed -i "s/vault_password_file/#vault_password_file/" ansible.cfg
+sed -i "s/vault_password_file/#vault_password_file/" galaxyXpand/ansible.cfg
+
+
