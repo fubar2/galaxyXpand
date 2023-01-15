@@ -18,10 +18,11 @@ galaxy_privsep_user: "{{ galaxy_user.name }}"
 galaxy_layout: root-dir
 galaxy_server_dir: "{{ galaxy_root }}/galaxy"
 galaxy_mutable_data_dir:  "{{ galaxy_server_dir }}/database"
-galaxy_mutable_config_dir: "{{ galaxy_config_dir }}"
+galaxy_mutable_config_dir: "{{ galaxy_server_dir }}/mutable"
 galaxy_config_dir: "{{ galaxy_root }}/config"
 galaxy_config_file: "{{ galaxy_config_dir }}/galaxy.yml"
-
+galaxy_local_tools_dir: "{{ galaxy_root }}/local_tools"
+galaxy_local_tools_src_dir: "/home/ross/rossgit/galaxyXpand/environments/tf/files/galaxy/tools"
 #galaxy_tool_dependency_dir: "{{ galaxy_server }}/tool_dependencies"
 galaxy_manage_cleanup: yes  # Install a cron job to clean up Galaxy framework and job execution temporary
 miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda"
@@ -30,6 +31,7 @@ miniconda_manage_dependencies: false
 
 galaxy_config:
   galaxy:
+    watch_tools: true
     sanitize_all_html: false
     enable_tool_shed_check: true
     hours_between_check: 12
@@ -102,29 +104,30 @@ galaxy_config:
           - job-handler
           - workflow-scheduler
 
-gcf: environments/tf/files
+gcf: environments/tf/files/galaxy/config
 
 galaxy_config_templates:
-  - src: "{{ gcf }}/galaxy/config/container_resolvers_conf.xml.j2"
+  - src: "{{ gcf }}/container_resolvers_conf.xml.j2"
     dest: "{{ galaxy_config.galaxy.containers_resolvers_config_file }}"
-  - src: "{{ gcf }}/galaxy/config/job_conf.yml.j2"
+  - src: "{{ gcf }}/job_conf.yml.j2"
     dest: "{{ galaxy_config.galaxy.job_config_file }}"
-  - src: "{{ gcf }}/galaxy/config/job_resource_params_conf.xml.j2"
+  - src: "{{ gcf }}/job_resource_params_conf.xml.j2"
     dest: "{{ galaxy_config.galaxy.job_resource_params_file }}"
 
 # deploy galaxy configuration files
 galaxy_config_files:
-  - src: "{{ gcf }}/galaxy/config/tool_sheds_conf.xml"
+  - src: "{{ gcf }}/tool_sheds_conf.xml"
     dest: "{{ galaxy_config_dir }}/tool_sheds_conf.xml"
-  - src: "{{ gcf }}/galaxy/html/welcome.html"
+  - src: "{{ gcf }}/../html/welcome.html"
     dest: "{{ galaxy_server_dir }}/static/welcome.html"
-  - src: "{{ gcf }}/galaxy/config/dependency_resolvers_conf.xml"
+  - src: "{{ gcf }}/dependency_resolvers_conf.xml"
     dest: "{{ galaxy_config.galaxy.dependency_resolvers_config_file }}"
-  - src: "{{ gcf }}/galaxy/config/reports.yml"
+  - src: "{{ gcf }}/reports.yml"
     dest: "{{ galaxy_reports_path }}"
 
-#galaxy_local_tools:
-#- testing.xml
+# want whole tool directories copied
+galaxy_local_tools:
+  - "toolfactory"
 
 # systemd
 galaxy_manage_systemd: true

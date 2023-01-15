@@ -1,3 +1,6 @@
+- src: vbotka.ansible_lib
+- src: vbotka.certificate
+  version: 2.2.0
 - src: galaxyproject.galaxy
   version: 0.10.4
 - src: galaxyproject.nginx
