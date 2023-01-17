@@ -49,16 +49,21 @@ WORKDIR /setup
 ENV LC_ALL=en_US.UTF-8 \
     LANG=en_US.UTF-8
 
-EXPOSE :80
-EXPOSE :21
-EXPOSE :8800
-EXPOSE :9002
-
 RUN mkdir -p /setup/.ansible/tmp && chmod 777 /setup/.ansible/tmp && \
     echo "remote_tmp = /setup/.ansible/tmp" >> ansible.cfg && \
     service postgresql start && \
     ansible --version && \
     ansible-galaxy install -r requirements.yml -p roles -f && \
     ansible-playbook -i environments/Docker/hosts -c local playbook.yml
+
+ONBUILD  WORKDIR  /setup
+ONBUILD  COPY  .  /setup
+ADD docker_startup.sh /docker_startup.sh
+RUN chmod +x /docker_startup.sh
+
+EXPOSE :80
+EXPOSE :21
+EXPOSE :8800
+EXPOSE :9002
 
 CMD ["/docker_startup.sh"]
