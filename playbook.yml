@@ -15,10 +15,9 @@
           - 'python3-psycopg2'
           -  'tar'
           - 'virtualenv'
+          - slurm-wlm
+          - slurm-drmaa-dev
           - python-psutil
-          - dirmngr
-          - systemd
-          - cron
 
   roles:
     - role: clean_galaxykickstart
