@@ -1,4 +1,8 @@
 ---
+# Docker specific settings
+install_postgresql: no
+install_slurm: no
+
 # Galaxy
 galaxy_additional_venv_packages: drmaa
 galaxy_create_user: true

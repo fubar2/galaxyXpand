@@ -1,5 +1,6 @@
 ---
 # NGINX
+nginx_supervisor: true
 nginx_server_src_dir: environments/dev_gce/templates/nginx/
 nginx_selinux_allow_local_connections: true
 nginx_servers:
