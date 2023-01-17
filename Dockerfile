@@ -61,4 +61,4 @@ RUN mkdir -p /setup/.ansible/tmp && chmod 777 /setup/.ansible/tmp && \
     ansible-galaxy install -r requirements.yml -p roles -f && \
     ansible-playbook -i environments/Docker/hosts -c local playbook.yml
 
-CMD service supervisord start && service postgresql start && service nginx start
+CMD ["/docker_startup.sh"]
