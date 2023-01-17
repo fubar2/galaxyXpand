@@ -28,8 +28,8 @@ USER postgres
 
 
 RUN    /etc/init.d/postgresql start &&\
-    psql --command "CREATE USER admin WITH SUPERUSER PASSWORD 'password';" &&\
-    createdb -O admin revamp
+    psql --command "CREATE USER root WITH SUPERUSER PASSWORD 'galaxy';" && \
+    createdb -O root rootdb
 
 # Adjust PostgreSQL configuration so that remote connections to the
 # database are possible.
@@ -42,5 +42,4 @@ RUN echo "listen_addresses='*'" >> /etc/postgresql/12/main/postgresql.conf
 EXPOSE 5432
 
 # Set the default command to run when starting the container
-# CMD ["/usr/lib/postgresql/12/bin/postgres", "-D", "/var/lib/postgresql/12/main", "-c", "config_file=/etc/postgresql/12/main/postgresql.conf"]
-# CMD ["/usr/sbin/init"]
+CMD ["/usr/lib/postgresql/12/bin/postgres", "-D", "/var/lib/postgresql/12/main", "-c", "config_file=/etc/postgresql/12/main/postgresql.conf"]

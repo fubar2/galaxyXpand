@@ -2,6 +2,7 @@
 # Docker specific settings
 install_postgresql: no
 install_slurm: no
+galaxy_manage_systemd: no
 
 # Galaxy
 galaxy_additional_venv_packages: drmaa
@@ -65,7 +66,3 @@ galaxy_config_templates:
 galaxy_config_files:
   - src: environments/dev_gce/files/galaxyXpand_logo.png
     dest: "{{ galaxy_server_dir }}/static/images/galaxyXpand_logo.png" 
-
-
-# systemd
-galaxy_manage_systemd: true
