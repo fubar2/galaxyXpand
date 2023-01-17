@@ -52,7 +52,7 @@ ENV LC_ALL=en_US.UTF-8 \
 RUN mkdir -p /setup/.ansible/tmp && chmod 777 /setup/.ansible/tmp && \
     echo "remote_tmp = /setup/.ansible/tmp" >> ansible.cfg && \
     service postgresql start && \
-    ansible --version && \
+    sed -i '/slurm-wlm/d' playbook.yml && sed -i '/slurm-drmaa-dev/d' playbook.yml && \
     ansible-galaxy install -r requirements.yml -p roles -f && \
     ansible-playbook -i environments/Docker/hosts -c local playbook.yml
 
