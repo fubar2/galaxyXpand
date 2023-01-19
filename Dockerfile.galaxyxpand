@@ -1,26 +1,56 @@
-FROM artbio_postgre:latest
+FROM ubuntu:20.04
 LABEL maintainer="Christophe Antoniewski <drosofff@gmail.com>"
-
 ARG DEBIAN_FRONTEND=noninteractive
 
-USER root
 
-RUN apt-get update  && \
-    \
+# Install ``python-software-properties``, ``software-properties-common`` and PostgreSQL 12
+#  There are some warnings (in red) that show up during the build. You can hide
+#  them by prefixing each apt-get statement with DEBIAN_FRONTEND=noninteractive
+RUN apt update && \
     \
     echo "===> Allow start of services"  && \
     echo "exit 0" > /usr/sbin/policy-rc.d  && \
     \
-    apt-get install -qq --no-install-recommends \
+    apt install -y -qq --no-install-recommends \
     apt-transport-https software-properties-common \
-    apt-utils proftpd proftpd-mod-pgsql git nano \
-    locales dirmngr python3-virtualenv
+    apt-utils git nano python3-pip python3-virtualenv \
+    postgresql-12 postgresql-client-12 postgresql-contrib-12 \
+    locales dirmngr && apt clean
 
-RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
-    locale-gen
-ENV LANG en_US.UTF-8  
-ENV LANGUAGE en_US:en  
-ENV LC_ALL en_US.UTF-8     
+RUN python3 -m pip install -U pip && python3 -m pip install ansible==2.10.1
+
+# Run the rest of the commands as the ``postgres`` user created by the ``postgres-12``
+# package when it was ``apt-get installed``
+
+USER postgres
+
+# Create a PostgreSQL role named ``docker`` with ``docker`` as the password and
+# then create a database `docker` owned by the ``docker`` role.
+# Note: here we use ``&&\`` to run commands one after the other - the ``\``
+#       allows the RUN command to span multiple lines.
+# User = admin
+# password = password
+# role = admin
+# database = revamp
+
+
+RUN    /etc/init.d/postgresql start &&\
+    psql --command "CREATE USER root WITH SUPERUSER PASSWORD 'galaxy';" && \
+    createdb -O root rootdb
+
+# Adjust PostgreSQL configuration so that remote connections to the
+# database are possible.
+RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/12/main/pg_hba.conf
+
+# And add ``listen_addresses`` to ``/etc/postgresql/12/main/postgresql.conf``
+RUN echo "listen_addresses='*'" >> /etc/postgresql/12/main/postgresql.conf
+
+USER root
+
+RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
 
 RUN mkdir /etc/ssl/private-copy /var/lib/postgresql-copy && \
     mv /var/lib/postgresql/* /var/lib/postgresql-copy && \
