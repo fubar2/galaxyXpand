@@ -20,12 +20,12 @@
           - 'liblzma-dev'
 
   roles:
+    - role: galaxyproject.galaxy
     - { role: geerlingguy.pip, become: yes }
     - { role: galaxyproject.postgresql, become: yes }
     - role: galaxyproject.postgresql_objects
       become: true
       become_user: postgres
-    - role: galaxyproject.galaxy
     - role: uchida.miniconda
       become: true
       become_user: "{{ galaxy_user.name }}"
