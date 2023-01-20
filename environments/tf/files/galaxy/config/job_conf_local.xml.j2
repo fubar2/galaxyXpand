@@ -1,0 +1,16 @@
+<job_conf>
+<handlers assign_with="db-skip-locked">
+    <handler id="handler1" />
+    <handler id="handler2" />
+</handlers>
+<!-- needed for 23.0 dev release -->
+    <plugins workers="4">
+        <plugin id="local_plugin" type="runner" load="galaxy.jobs.runners.local:LocalJobRunner"/>
+    </plugins>
+    <destinations default="local_destination">
+        <destination id="local_destination" runner="local_plugin"/>
+    </destinations>
+    <tools>
+        <tool id="foo" destination=local_destination/>
+    </tools>
+</job_conf>

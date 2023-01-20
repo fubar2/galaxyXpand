@@ -1,5 +1,5 @@
 ---
-- hosts: 127.0.0.1
+- hosts: localhost
 
   pre_tasks:
 
@@ -13,8 +13,6 @@
           - 'python3-psycopg2'
           -  'tar'
           - 'virtualenv'
-          - slurm-wlm
-          - slurm-drmaa-dev
           - python-psutil
           - libbz2-dev
           - liblzma-dev
