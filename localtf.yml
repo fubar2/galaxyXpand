@@ -14,7 +14,7 @@
           -  'tar'
           - 'virtualenv'
           #- 'python-psutil'
-          - slurm-drmaa-dev
+          #- slurm-drmaa-dev
           - python-psutil
           - 'libbz2-dev'
           - 'liblzma-dev'
