@@ -1,7 +1,5 @@
 ---
-- hosts: galaxyservers
-  become: true
-  become_user: root
+- hosts: 127.0.0.1
 
   pre_tasks:
 
@@ -22,8 +20,6 @@
           - liblzma-dev
 
   roles:
-    - cyverse-ansible.singularity
-# - vbotka.certificate
     - geerlingguy.pip
     - galaxyproject.postgresql
     - role: galaxyproject.postgresql_objects
@@ -33,15 +29,8 @@
     - role: uchida.miniconda
       become: true
       become_user: "{{ galaxy_user.name }}"
-    - galaxyproject.nginx
-    - galaxyproject.slurm
-    - gantsign.golang
     - usegalaxy_eu.rabbitmq
-    - galaxyproject.cvmfs
     - galaxyproject.gxadmin
-#    - dj-wasabi.telegraf
-#    - galaxyproject.proftpd
-#    - galaxyproject.tusd
 
 
 
