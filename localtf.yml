@@ -1,5 +1,7 @@
 ---
 - hosts: localhost
+  become: true
+  become_user: root
 
   pre_tasks:
 
@@ -13,9 +15,9 @@
           - 'python3-psycopg2'
           -  'tar'
           - 'virtualenv'
-          - python-psutil
-          - libbz2-dev
-          - liblzma-dev
+          #- 'python-psutil'
+          - 'libbz2-dev'
+          - 'liblzma-dev'
 
   roles:
     - geerlingguy.pip
