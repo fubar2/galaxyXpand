@@ -5,12 +5,6 @@
 
   pre_tasks:
 
-    - name: Add custom slurm PPA (used for Slurm DRMAA package)
-      apt_repository:
-        repo: ppa:natefoo/slurm-drmaa
-        state: present
-        update_cache: yes
-
     - name: Install Dependencies
       package:
         name:
@@ -27,11 +21,12 @@
           - libbz2-dev
           - liblzma-dev
   roles:
-    - clean_galaxykickstart
     - cyverse-ansible.singularity
 # - vbotka.certificate
     - geerlingguy.pip
     - galaxyproject.postgresql
+    - role: clean_galaxykickstart
+      when: galaxykickstart_to_gravity
     - role: galaxyproject.postgresql_objects
       become: true
       become_user: postgres
@@ -50,9 +45,6 @@
 #    - dj-wasabi.telegraf
 #    - galaxyproject.proftpd
 #    - galaxyproject.tusd
-
-
-
   post_tasks:
 
     - name: restart nginx
