@@ -1,5 +1,5 @@
 ---
-  hosts: localhost
+- hosts: localhost
   connection: local
   pre_tasks:
 
@@ -14,12 +14,14 @@
           -  'tar'
           - 'virtualenv'
           #- 'python-psutil'
+          - slurm-drmaa-dev
+          - python-psutil
           - 'libbz2-dev'
           - 'liblzma-dev'
 
   roles:
-    - geerlingguy.pip
-    - galaxyproject.postgresql
+    - { role: geerlingguy.pip, become: yes }
+    - { role: galaxyproject.postgresql, become: yes }
     - role: galaxyproject.postgresql_objects
       become: true
       become_user: postgres
@@ -27,8 +29,8 @@
     - role: uchida.miniconda
       become: true
       become_user: "{{ galaxy_user.name }}"
-    - usegalaxy_eu.rabbitmq
-    - galaxyproject.gxadmin
+    - { role: usegalaxy_eu.rabbitmq, become: yes }
+    - { role: galaxyproject.gxadmin, become: yes }
 
 
 
