@@ -9,6 +9,7 @@ galaxy_config_perms: 0664
 galaxy_root: "{{ groot }}"
 galaxy_user: {name: galaxy, shell: /bin/bash}
 galaxy_commit_id: release_22.05
+
 galaxy_force_checkout: true
 galaxy_additional_venv_packages: drmaa
 galaxy_create_user: true
@@ -23,6 +24,7 @@ galaxy_config_dir: "{{ galaxy_root }}/config"
 galaxy_config_file: "{{ galaxy_config_dir }}/galaxy.yml"
 galaxy_local_tools_dir: "{{ galaxy_root }}/local_tools"
 galaxy_local_tools_src_dir: "/home/ross/rossgit/galaxyXpand/environments/tf/files/galaxy/tools"
+galaxy_tool_config_file: tool_conf.xml, local_tool_conf.xml
 #galaxy_tool_dependency_dir: "{{ galaxy_server }}/tool_dependencies"
 galaxy_manage_cleanup: yes  # Install a cron job to clean up Galaxy framework and job execution temporary
 miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda"
@@ -97,19 +99,16 @@ galaxy_config:
     celery:
       concurrency: 2
       loglevel: DEBUG
-    handlers:
-      handler:
-        processes: 3
-        pools:
-          - job-handler
-          - workflow-scheduler
+
 
 gcf: environments/tf/files/galaxy/config
 
 galaxy_config_templates:
+  - src: "{{ gcf }}/local_tool_conf.xml.j2"
+    dest: "{{ galaxy_config_dir }}/local_tool_conf.xml"
   - src: "{{ gcf }}/container_resolvers_conf.xml.j2"
     dest: "{{ galaxy_config.galaxy.containers_resolvers_config_file }}"
-  - src: "{{ gcf }}/job_conf.yml.j2"
+  - src: "{{ gcf }}/job_conf.xml.j2"
     dest: "{{ galaxy_config.galaxy.job_config_file }}"
   - src: "{{ gcf }}/job_resource_params_conf.xml.j2"
     dest: "{{ galaxy_config.galaxy.job_resource_params_file }}"
@@ -130,7 +129,7 @@ galaxy_local_tools:
   - "toolfactory"
 
 # systemd
-galaxy_manage_systemd: true
+galaxy_manage_systemd: false
 galaxy_manage_systemd_reports: false # yes
 galaxy_systemd_env: [DRMAA_LIBRARY_PATH="/usr/lib/slurm-drmaa/lib/libdrmaa.so.1"]
 
