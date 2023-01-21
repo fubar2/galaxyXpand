@@ -1,0 +1,74 @@
+runners:
+  local_runner:
+    load: galaxy.jobs.runners.local:LocalJobRunner
+    workers: 4
+  slurm:
+    load: galaxy.jobs.runners.slurm:SlurmJobRunner
+    drmaa_library_path: /usr/lib/slurm-drmaa/lib/libdrmaa.so
+  pulsar_runner:
+    load: galaxy.jobs.runners.pulsar:PulsarMQJobRunner
+    amqp_url: "pyamqp://galaxy_au:{{ vault_rabbitmq_password_vhost }}@localhost:5671/{{ rabbitmq_vhosts[0] }}?ssl=1"
+    amqp_acknowledge: true
+    amqp_ack_republish_time: 1200
+    amqp_consumer_timeout: 2
+    amqp_publish_retry: true
+    amqp_publish_retry_max_retries: 60
+    galaxy_url: "https://{{ inventory_hostname }}"
+    manager: _default_
+
+execution:
+  default: singularity
+  environments:
+    local_dest:
+      runner: local_runner
+    pulsar:
+      runner: pulsar_runner
+      default_file_action: remote_transfer
+      dependency_resolution: remote
+      jobs_directory: /mnt/pulsar/files/staging
+      persistence_directory: /mnt/pulsar/files/persisted_data
+      remote_metadata: false
+      rewrite_parameters: true
+      transport: curl
+      outputs_to_working_directory: false
+    slurm:
+      runner: slurm
+      singularity_enabled: true
+      env:
+      - name: LC_ALL
+        value: C
+      - name: SINGULARITY_CACHEDIR
+        value: /tmp/singularity
+      - name: SINGULARITY_TMPDIR
+        value: /tmp
+    slurm-2c:
+      runner: slurm
+      singularity_enabled: true
+      native_specification: --nodes=1 --ntasks=1 --cpus-per-task=2
+      env:
+      - name: LC_ALL
+        value: C
+      - name: SINGULARITY_CACHEDIR
+        value: /tmp/singularity
+      - name: SINGULARITY_TMPDIR
+        value: /tmp
+    singularity:
+      runner: local_runner
+      singularity_enabled: true
+      env:
+      # Ensuring a consistent collation environment is good for reproducibility.
+      - name: LC_ALL
+        value: C
+      # The cache directory holds the docker containers that get converted
+      - name: SINGULARITY_CACHEDIR
+        value: /tmp/singularity
+      # Singularity uses a temporary directory to build the squashfs filesystem
+      - name: SINGULARITY_TMPDIR
+        value: /tmp
+
+resources:
+  default: default
+  groups:
+    default: []
+    testing: [cores, time]
+

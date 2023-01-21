@@ -1,0 +1,299 @@
+---
+
+groot: /evol/galaxylocal
+# this sets the installation destination
+
+# Galaxy
+
+galaxy_config_perms: 0664
+galaxy_root: "{{ groot }}"
+galaxy_user: {name: galaxy, shell: /bin/bash}
+galaxy_commit_id: d2a4339c8881e3fbcc2ac0b7f3ec7d67f98fff3e
+galaxy_force_checkout: true
+# galaxy_additional_venv_packages: null
+galaxy_create_user: true
+galaxy_reports_path: "{{ galaxy_config_dir }}/reports.yml"
+galaxy_separate_privileges: true
+galaxy_privsep_user: "{{ galaxy_user.name }}"
+galaxy_layout: root-dir
+galaxy_server_dir: "{{ galaxy_root }}/galaxy"
+galaxy_mutable_data_dir:  "{{ galaxy_root }}/mutable_data"
+galaxy_mutable_config_dir: "{{ galaxy_server_dir }}/mutable_config"
+galaxy_config_dir: "{{ galaxy_root }}/config"
+galaxy_config_file: "{{ galaxy_config_dir }}/galaxy.yml"
+galaxy_local_tools_dir: "{{ galaxy_root }}/local_tools"
+galaxy_local_tools_src_dir: "/home/ross/rossgit/galaxyXpand/environments/tf/files/galaxy/tools"
+galaxy_tool_config_file: tool_conf.xml, local_tool_conf.xml
+galaxy_tool_dependency_dir: "{{ galaxy_server }}/tool_dependencies"
+galaxy_manage_cleanup: yes  # Install a cron job to clean up Galaxy framework and job execution temporary
+miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda"
+miniconda_version: 4.7.12
+miniconda_manage_dependencies: false
+
+galaxy_config:
+  galaxy:
+    watch_tools: true
+    sanitize_all_html: false
+    enable_tool_shed_check: true
+    hours_between_check: 12
+    shed_data_manager_config_file:  "/home/{{ galaxy_user.name }}/shed_data_manager_conf.xml"
+    statsd_host: localhost
+    statsd_influxdb: true
+    job_resource_params_file: "{{ galaxy_config_dir }}/job_resource_params_conf.xml"
+    tool_destinations_config_file: "{{ galaxy_config_dir }}/tool_destinations.yml"
+    library_import_dir: "{{ groot }}/libraries/admin"
+    user_library_import_dir: "{{ groot }}/libraries/user"
+    dependency_resolvers_config_file: "{{ galaxy_config_dir }}/dependency_resolvers_conf.xml"
+    containers_resolvers_config_file: "{{ galaxy_config_dir }}/container_resolvers_conf.xml"
+    tool_data_table_config_path: /cvmfs/data.galaxyproject.org/byhand/location/tool_data_table_conf.xml,/cvmfs/data.galaxyproject.org/managed/location/tool_data_table_conf.xml
+    brand: "RossToolfactory"
+    admin_users: admin@example.org
+    database_connection: "postgresql:///galaxy?host=/var/run/postgresql"
+    file_path: "{{ groot }}/data"
+    check_migrate_tools: false
+    tool_data_path: "{{ galaxy_mutable_data_dir }}/tool-data"
+    object_store_store_by: uuid
+    id_secret: "{{ vault_id_secret }}"
+    job_config_file: "{{ galaxy_config_dir }}/job_conf.xml"
+    # SQL Performance
+    database_engine_option_server_side_cursors: true
+    slow_query_log_threshold: 5
+    enable_per_request_sql_debugging: true
+    # File serving Performance
+    nginx_x_accel_redirect_base: /_x_accel_redirect
+    # Automation / Ease of Use / User-facing features
+    watch_job_rules: 'auto'
+    allow_path_paste: true
+    enable_quotas: true
+    allow_user_deletion: true
+    show_welcome_with_login: true
+    expose_user_name: true
+    expose_dataset_path: true
+    expose_potentially_sensitive_job_metrics: true
+    # NFS workarounds
+    retry_job_output_collection: 3
+    # Debugging
+    cleanup_job: onsuccess
+    allow_user_impersonation: true
+    # Tool security
+    outputs_to_working_directory: true
+    # TUS
+    tus_upload_store: "{{ groot }}/data/tus"
+    # FTP
+    ftp_upload_dir:  "{{ groot }}/data/uploads"
+    ftp_upload_site: "{{ inventory_hostname }}"
+
+  gravity:
+    galaxy_root: "{{ galaxy_server_dir }}"
+    app_server: gunicorn
+    gunicorn:
+      # listening options
+      bind: http://localhost:8080 #"unix:{{ galaxy_config_dir }}/gunicorn.sock"
+      # performance options
+      workers: 2
+      # Other options that will be passed to gunicorn
+      extra_args: '--forwarded-allow-ips="*"'
+      preload: true
+      proxy_read_timeout: 600
+    celery:
+      concurrency: 2
+      loglevel: DEBUG
+
+
+gcf: environments/tf/files/galaxy/config
+
+galaxy_config_templates:
+  - src: "{{ gcf }}/local_tool_conf.xml.j2"
+    dest: "{{ galaxy_config_dir }}/local_tool_conf.xml"
+  - src: "{{ gcf }}/container_resolvers_conf.xml.j2"
+    dest: "{{ galaxy_config.galaxy.containers_resolvers_config_file }}"
+  - src: "{{ gcf }}/job_conf_local.xml.j2"
+    dest: "{{ galaxy_config.galaxy.job_config_file }}"
+  - src: "{{ gcf }}/job_resource_params_conf.xml.j2"
+    dest: "{{ galaxy_config.galaxy.job_resource_params_file }}"
+
+# deploy galaxy configuration files
+galaxy_config_files:
+  - src: "{{ gcf }}/install_tf_deps.sh"
+    dest: "{{ galaxy_config_dir }}/install_tf_deps.sh"
+  - src: "{{ gcf }}/tool_sheds_conf.xml"
+    dest: "{{ galaxy_config_dir }}/tool_sheds_conf.xml"
+  - src: "{{ gcf }}/../html/welcome.html"
+    dest: "{{ galaxy_server_dir }}/static/welcome.html"
+  - src: "{{ gcf }}/dependency_resolvers_conf.xml"
+    dest: "{{ galaxy_config.galaxy.dependency_resolvers_config_file }}"
+  - src: "{{ gcf }}/reports.yml"
+    dest: "{{ galaxy_reports_path }}"
+
+# want whole tool directories copied
+galaxy_local_tools:
+  - "toolfactory"
+
+# systemd
+galaxy_manage_systemd: true
+galaxy_manage_systemd_reports: false
+galaxy_systemd_env: [DRMAA_LIBRARY_PATH="/usr/lib/slurm-drmaa/lib/libdrmaa.so.1"]
+
+# NGINX
+nginx_server_src_dir: environments/tf/templates/nginx/
+nginx_selinux_allow_local_connections: true
+nginx_servers:
+  - redirect-ssl
+nginx_ssl_servers:
+  - galaxy
+nginx_enable_default_server: false
+nginx_conf_http:
+  client_max_body_size: 1g
+  # gzip: "on" # This is enabled by default in Ubuntu, and the duplicate directive will cause a crash.
+  gzip_proxied: "any"
+  gzip_static: "on"   # The ngx_http_gzip_static_module module allows sending precompressed files with the ".gz" filename extension instead of regular files.
+  gzip_vary: "on"
+  gzip_min_length: 128
+  gzip_comp_level: 6  # Tradeoff of better compression for slightly more CPU time.
+  gzip_types: |
+      text/plain
+      text/css
+      text/xml
+      text/javascript
+      application/javascript
+      application/x-javascript
+      application/json
+      application/xml
+      application/xml+rss
+      application/xhtml+xml
+      application/x-font-ttf
+      application/x-font-opentype
+      image/png
+      image/svg+xml
+      image/x-icon
+nginx_ssl_role: usegalaxy_eu.certbot
+nginx_conf_ssl_certificate: /etc/ssl/certs/fullchain.pem
+nginx_conf_ssl_certificate_key: /etc/ssl/user/privkey-nginx.pem
+
+# Slurm
+slurm_roles: ['controller', 'exec'] # Which roles should the machine play? exec are execution hosts.
+slurm_nodes:
+- name: localhost # Name of our host
+  CPUs: 8         # Here you would need to figure out how many cores your machine has. For this training we will use 2 but in real life, look at `htop` or similar.
+slurm_config:
+  SlurmdParameters: config_overrides   # Ignore errors if the host actually has cores != 2
+  SelectType: select/cons_res
+  SelectTypeParameters: CR_CPU_Memory  # Allocate individual cores/memory instead of entire node
+
+
+
+# Certbot
+certbot_virtualenv_package_name: "virtualenv"
+certbot_auto_renew_hour: "{{ 23 |random(seed=inventory_hostname)  }}"
+certbot_auto_renew_minute: "{{ 59 |random(seed=inventory_hostname)  }}"
+certbot_auth_method: --webroot
+certbot_install_method: virtualenv
+certbot_auto_renew: yes
+certbot_auto_renew_user: root
+certbot_environment: staging
+certbot_well_known_root: /srv/nginx/_well-known_root
+certbot_share_key_users:
+  - nginx
+  - rabbitmq
+  - proftpd
+certbot_post_renewal: |
+    systemctl restart nginx || true
+    systemctl restart rabbitmq-server || true
+    systemctl restart proftpd || true
+certbot_domains:
+ - "{{ inventory_hostname }}"
+certbot_agree_tos: --agree-tos
+
+
+
+# Golang
+golang_gopath: '/opt/workspace-go'
+# Singularity target version
+singularity_version: "3.7.4"
+singularity_go_path: "{{ golang_install_dir }}"
+
+
+# RabbitMQ
+rabbitmq_version: 3.8.35-1
+rabbitmq_plugins: rabbitmq_management
+
+rabbitmq_config:
+- rabbit:
+  - tcp_listeners:
+    - "'127.0.0.1'": 5672
+  - ssl_listeners:
+    - "'0.0.0.0'": 5671
+  - ssl_options:
+     - cacertfile: /etc/ssl/certs/fullchain.pem
+     - certfile: /etc/ssl/certs/cert.pem
+     - keyfile: /etc/ssl/user/privkey-rabbitmq.pem
+     - fail_if_no_peer_cert: 'false'
+
+rabbitmq_vhosts:
+  - /pulsar/galaxy_au
+
+rabbitmq_users:
+  - user: admin
+    password: "{{ vault_rabbitmq_admin_password }}"
+    tags: administrator
+    vhost: /
+  - user: galaxy_au
+    password: "{{ vault_rabbitmq_password_vhost }}"
+    vhost: /pulsar/galaxy_au
+
+# Proftpd
+proftpd_galaxy_auth: yes
+galaxy_ftp_upload_dir: "{{ galaxy_config.galaxy.ftp_upload_dir }}"
+proftpd_display_connect: |
+  {{ inventory_hostname }} FTP server
+
+  Unauthorized access is prohibited
+proftpd_create_ftp_upload_dir: yes
+proftpd_options:
+  - User: galaxy
+  - Group: galaxy
+  - Port: 21
+proftpd_sql_db: galaxy@/var/run/postgresql
+proftpd_sql_user: galaxy
+proftpd_conf_ssl_certificate: /etc/ssl/certs/cert.pem
+proftpd_conf_ssl_certificate_key: /etc/ssl/user/privkey-proftpd.pem
+proftpd_global_options:
+  - PassivePorts: 56000 60000
+proftpd_use_mod_tls_shmcache: false
+proftpd_tls_options: NoSessionReuseRequired
+
+# Telegraf
+telegraf_plugins_extra:
+  listen_galaxy_routes:
+    plugin: "statsd"
+    config:
+      - service_address = ":8125"
+      - metric_separator = "."
+      - allowed_pending_messages = 10000
+  monitor_galaxy_queue:
+    plugin: "exec"
+    config:
+      - commands = ["/usr/bin/env PGDATABASE=galaxy /usr/local/bin/gxadmin iquery queue-overview --short-tool-id"]
+      - timeout = "10s"
+      - data_format = "influx"
+      - interval = "15s"
+
+# TUS
+galaxy_tusd_port: 1080
+tusd_instances:
+  - name: main
+    user: "{{ galaxy_user.name }}"
+    group: "galaxy"
+    args:
+      - "-host=localhost"
+      - "-port={{ galaxy_tusd_port }}"
+      - "-upload-dir={{ galaxy_config.galaxy.tus_upload_store }}"
+      - "-hooks-http=https://{{ inventory_hostname }}/api/upload/hooks"
+      - "-hooks-http-forward-headers=X-Api-Key,Cookie"
+
+# CVMFS vars
+cvmfs_role: client
+galaxy_cvmfs_repos_enabled: config-repo
+cvmfs_quota_limit: 10000
+cvmfs_cache_base: "{{ galaxy_root }}/cvmfs_cache"
+
