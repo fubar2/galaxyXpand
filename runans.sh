@@ -1,6 +1,7 @@
 # first time run only to generate and encrypt some vault passwords that do not matter but should always be set
 DEST=environments/tf/group_vars/all
 ansible-galaxy install -p roles -r requirements.yml
+ansible-galaxy collection install community.general
 # make an unencrypted secret - will be encrypted before save
 openssl rand -base64 24 > .vault-password.txt
 openssl rand -base64 24 > .vault-id-secret.txt

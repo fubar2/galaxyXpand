@@ -20,25 +20,17 @@
           - 'liblzma-dev'
 
   roles:
-    - role: galaxyproject.galaxy
     - { role: geerlingguy.pip, become: yes }
     - { role: galaxyproject.postgresql, become: yes }
     - role: galaxyproject.postgresql_objects
       become: true
       become_user: postgres
+    - role: galaxyproject.galaxy
     - role: uchida.miniconda
       become: true
       become_user: "{{ galaxy_user.name }}"
-    - { role: usegalaxy_eu.rabbitmq, become: yes }
+#    - { role: usegalaxy_eu.rabbitmq, become: yes }
     - { role: galaxyproject.gxadmin, become: yes }
 
 
-
-  post_tasks:
-
-    - name: restart nginx
-      service:
-        name: nginx
-        state: restarted
-      when: not nginx_supervisor
 
