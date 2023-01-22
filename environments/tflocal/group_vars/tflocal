@@ -100,7 +100,7 @@ galaxy_config:
       loglevel: DEBUG
 
 
-gcf: environments/tf/files/galaxy/config
+gcf: environments/tflocal/files/galaxy/config
 
 galaxy_config_templates:
   - src: "{{ gcf }}/local_tool_conf.xml.j2"
