@@ -23,7 +23,7 @@ galaxy_mutable_config_dir: "{{ galaxy_root }}/mutable_config"
 galaxy_config_dir: "{{ galaxy_root }}/config"
 galaxy_config_file: "{{ galaxy_config_dir }}/galaxy.yml"
 galaxy_local_tools_dir: "{{ galaxy_root }}/local_tools"
-galaxy_local_tools_src_dir: "/home/ross/rossgit/galaxyXpand/environments/tflocal/files/galaxy/tools"
+galaxy_local_tools_src_dir: "/evol/galaxyXpand/environments/tflocal/files/galaxy/tools/toolfactory"
 galaxy_tool_config_file: tool_conf.xml, local_tool_conf.xml
 galaxy_tool_dependency_dir: "{{ galaxy_root }}/tool_dependencies"
 galaxy_manage_cleanup: yes  # Install a cron job to clean up Galaxy framework and job execution temporary
