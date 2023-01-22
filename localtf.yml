@@ -1,4 +1,5 @@
 ---
+
 - hosts: tflocal
   connection: local
   vars_files:
@@ -11,6 +12,7 @@
         path: "{{ galaxy_root }}"
         state: directory
         owner: galaxy
+
 
     - name: Install Dependencies
       package:
@@ -43,8 +45,9 @@
 #    - { role: usegalaxy_eu.rabbitmq, become: yes }
     - { role: galaxyproject.gxadmin, become: yes }
 
-  post-tasks
+  post_tasks:
     - name: Copy local tools to local_tool_dir
       copy:
         src: "{{ galaxy_local_tools_src_dir }}/"
         dest: "{{ galaxy_local_tools_dir }}"
+

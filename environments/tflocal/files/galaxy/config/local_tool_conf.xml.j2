@@ -1,8 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <toolbox monitor="true" tool_path="{{ galaxy_local_tools_dir }}">
 <section name="Local Tools" id="localtools">
-{% for tool in galaxy_local_tools %}
-    <tool file="{{ tool }}/{{ tool }}.xml" />
-{% endfor %}
+    <tool file="toolfactory/toolfactory.xml" />
 </section>
 </toolbox>
