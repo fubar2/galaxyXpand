@@ -1,8 +1,8 @@
 ---
-- hosts: localhost
+- hosts: tflocal
   connection: local
   vars_files:
-    - group_vars/secret.yml
+    - environments/tflocal/group_vars/secret.yml
   pre_tasks:
 
     - name: Install Dependencies
