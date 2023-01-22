@@ -1,6 +1,8 @@
 ---
 - hosts: localhost
   connection: local
+  vars_files:
+    - group_vars/secret.yml
   pre_tasks:
 
     - name: Install Dependencies
