@@ -1,2 +1,2 @@
-[local]
+[tflocal]
 localhost ansible_connection=local ansible_sudo=yes
