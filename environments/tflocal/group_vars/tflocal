@@ -124,9 +124,9 @@ galaxy_config_files:
   - src: "{{ gcf }}/dependency_resolvers_conf.xml"
     dest: "{{ galaxy_config.galaxy.dependency_resolvers_config_file }}"
 
-# want whole tool directories copied
-galaxy_local_tools:
-  - "toolfactory"
+# want whole tool directories copied - replace with a task at end of playbook
+#galaxy_local_tools:
+# - "toolfactory"
 
 # systemd
 galaxy_manage_systemd: true

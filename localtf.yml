@@ -45,5 +45,8 @@
 #    - { role: usegalaxy_eu.rabbitmq, become: yes }
     - { role: galaxyproject.gxadmin, become: yes }
 
-
-
+  post-tasks
+      - name: Copy local tools to local_tool_dir
+        copy:
+          src: "{{ galaxy_local_tools_src_dir }}/"
+          dest: "{{ galaxy_local_tools_dir }}"
