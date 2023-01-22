@@ -4,7 +4,6 @@
   vars_files:
     - environments/tflocal/group_vars/secret.yml
   pre_tasks:
-
     - name: Create root for galaxy user
       become: true
       become_user: root
@@ -12,7 +11,6 @@
         path: "{{ galaxy_root }}"
         state: directory
         owner: galaxy
-
 
     - name: Install Dependencies
       package:
