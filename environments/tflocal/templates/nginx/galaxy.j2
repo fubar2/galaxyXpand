@@ -13,7 +13,7 @@ server {
     location / {
         # This is the backend to send the requests to.
         proxy_pass http://unix:{{ galaxy_config_dir }}/gunicorn.sock;
-        # http://localhost:8080;
+        # http://localhost:8080; "unix:{{ galaxy_config_dir }}/gunicorn.sock";
         proxy_read_timeout 600;
         proxy_set_header Host $http_host;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

@@ -94,8 +94,9 @@ galaxy_config:
     app_server: gunicorn
     instance_name: "DEV_Toolfactory"
     gunicorn:
-      # listening options
-      bind: "127.0.0.1:8080"
+      # listening options "unix:{{ galaxy_config_dir }}/gunicorn.sock"
+      bind: "unix:{{ galaxy_config_dir }}/gunicorn.sock";
+      # "127.0.0.1:8080"
       # "unix:{{ galaxy_config_dir }}/gunicorn.sock"
       # performance options
       workers: 2
