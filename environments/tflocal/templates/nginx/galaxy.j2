@@ -1,4 +1,4 @@
-upstream {{ inventory_hostname }} {
+upstream tflocal {
     server localhost:8080;
     # Or if you serve galaxy at a path like http(s)://fqdn/galaxy
     # Remember to set galaxy_url_prefix in the galaxy.yml file.
@@ -9,7 +9,7 @@ server {
     # Listen on port 443
     listen        *:443 ssl default_server;
     # The virtualhost is our domain name
-    server_name   "{{ inventory_hostname }}";
+    server_name "galaxy.genomicsvl-students.cloud.edu.au";
 
     # Our log files will go here.
     access_log  syslog:server=unix:/dev/log;
@@ -17,9 +17,9 @@ server {
 
     # The most important location block, by default all requests are sent to gunicorn
     # If you serve galaxy at a path like /galaxy, change that below (and all other locations!)
-    location /{{ inventory_hostname }} {
+    location /tflocal {
         # This is the backend to send the requests to.
-        proxy_pass http://{{ inventory_hostname }};
+        proxy_pass http://tflocal;
         proxy_read_timeout 600;
         proxy_set_header Host $http_host;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -27,8 +27,10 @@ server {
         proxy_set_header Upgrade $http_upgrade;
     }
 
+        # redirect /prefix -> /prefix/
+        rewrite ^/tflocal$ /tflocal/ last;
 
-    location /{{ inventory_hostname }}/api/upload/resumable_upload {
+    location /tflocal/api/upload/resumable_upload {
         # Disable request and response buffering
         proxy_request_buffering     off;
         proxy_buffering             off;
@@ -47,7 +49,7 @@ server {
     # Static files can be more efficiently served by Nginx. Why send the
     # request to Gunicorn which should be spending its time doing more useful
     # things like serving Galaxy!
-    location /{{ inventory_hostname }}/static {
+    location /tflocal/static {
         alias {{ galaxy_server_dir }}/static;
         expires 24h;
     }
@@ -55,7 +57,7 @@ server {
     # In Galaxy instances started with run.sh, many config files are
     # automatically copied around. The welcome page is one of them. In
     # production, this step is skipped, so we will manually alias that.
-    location /{{ inventory_hostname }}/static/welcome.html {
+    location /tflocal/static/welcome.html {
         alias {{ galaxy_server_dir }}/static/welcome.html;
         expires 24h;
     }
@@ -67,31 +69,31 @@ server {
                   $vis_d/static/$static_file =404;
     }
 
-    location /{{ inventory_hostname }}/robots.txt {
+    location /tflocal/robots.txt {
         alias {{ galaxy_server_dir }}/static/robots.txt;
     }
 
-    location /{{ inventory_hostname }}/favicon.ico {
+    location /tflocal/favicon.ico {
         alias {{ galaxy_server_dir }}/static/favicon.ico;
     }
 
-    location /{{ inventory_hostname }}/_x_accel_redirect {
+    location /tflocal/_x_accel_redirect {
         internal;
         alias /;
     }
 
     # Support click-to-run in the GTN-in-Galaxy Webhook
-    location /{{ inventory_hostname }}/training-material/ {
+    location /tflocal/training-material/ {
         proxy_pass https://training.galaxyproject.org/training-material/;
     }
 
-    location /{{ inventory_hostname }}/grafana/ {
+    location /tflocal/grafana/ {
         proxy_pass http://127.0.0.1:3000/;
         proxy_set_header Host $http_host;
     }
 
 
-    location /{{ inventory_hostname }}/reports/ {
+    location /tflocal/reports/ {
         uwsgi_pass           127.0.0.1:9001;
         uwsgi_param          UWSGI_SCHEME $scheme;
         include              uwsgi_params;

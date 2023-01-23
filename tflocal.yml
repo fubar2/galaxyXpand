@@ -42,6 +42,8 @@
     - role: uchida.miniconda
       become: true
       become_user: "{{ galaxy_user.name }}"
+    - { role: usegalaxy_eu.certbot, become:yes }
+    - { role: galaxyproject.nginx, become:yes }
 #    - { role: usegalaxy_eu.rabbitmq, become: yes }
     - { role: galaxyproject.gxadmin, become: yes }
 

@@ -5,6 +5,7 @@ groot: /evol/galaxylocal
 
 # Galaxy
 galaxy_url_prefix: "/{{ inventory_hostname }}"
+inventory_hostname: galaxy.genomicsvl-students.cloud.edu.au
 galaxy_manage_gravity: true
 galaxy_config_perms: 0664
 galaxy_root: "{{ groot }}"
