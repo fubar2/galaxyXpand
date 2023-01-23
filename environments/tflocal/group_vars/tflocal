@@ -93,7 +93,7 @@ galaxy_config:
     app_server: gunicorn
     gunicorn:
       # listening options
-      bind: "localhost:8080"
+      bind: "127.0.0.1:8080"
       # "unix:{{ galaxy_config_dir }}/gunicorn.sock"
       # performance options
       workers: 2
