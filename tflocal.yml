@@ -32,7 +32,7 @@
 
   roles:
     - { role: geerlingguy.pip, become: yes }
-    - { role: galaxyproject.postgresql, become: yes }
+    - { role: galaxyproject.postgresql, become: yes, become_user: root }
     - role: galaxyproject.postgresql_objects
       become: true
       become_user: postgres
@@ -42,10 +42,10 @@
     - role: uchida.miniconda
       become: true
       become_user: "{{ galaxy_user.name }}"
-    - { role: usegalaxy_eu.certbot, become:yes }
-    - { role: galaxyproject.nginx, become:yes }
+#    - { role: usegalaxy_eu.certbot, become:yes, become_user: root}
+    - { role: galaxyproject.nginx, become:yes, become_user: root }
 #    - { role: usegalaxy_eu.rabbitmq, become: yes }
-    - { role: galaxyproject.gxadmin, become: yes }
+    - { role: galaxyproject.gxadmin, become: yes, become_user: root}
 
   post_tasks:
     - name: Copy local tools to local_tool_dir
