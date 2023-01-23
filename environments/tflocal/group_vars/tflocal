@@ -4,6 +4,7 @@ groot: /evol/galaxylocal
 # this sets the installation destination
 
 # Galaxy
+galaxy_url_prefix: "/{{ inventory_hostname }}"
 galaxy_manage_gravity: true
 galaxy_config_perms: 0664
 galaxy_root: "{{ groot }}"
@@ -132,7 +133,7 @@ galaxy_manage_systemd_reports: false
 # galaxy_systemd_env: [DRMAA_LIBRARY_PATH="/usr/lib/slurm-drmaa/lib/libdrmaa.so.1"]
 
 # NGINX
-nginx_server_src_dir: environments/tf/templates/nginx/
+nginx_server_src_dir: environments/tflocal/templates/nginx/
 nginx_selinux_allow_local_connections: true
 nginx_servers:
   - redirect-ssl
