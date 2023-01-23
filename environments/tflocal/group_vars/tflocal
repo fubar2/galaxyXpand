@@ -4,7 +4,7 @@ groot: /evol/galaxylocal
 # this sets the installation destination
 
 # Galaxy
-galaxy_url_prefix: "/{{ inventory_hostname }}"
+galaxy_url_prefix: /tflocal
 inventory_hostname: galaxy.genomicsvl-students.cloud.edu.au
 galaxy_manage_gravity: true
 galaxy_config_perms: 0664
