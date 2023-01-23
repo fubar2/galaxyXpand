@@ -37,7 +37,6 @@ miniconda_manage_dependencies: false
 
 galaxy_config:
   galaxy:
-    galaxy_url_prefix: /tflocal
     watch_tools: true
     sanitize_all_html: false
     enable_tool_shed_check: true
