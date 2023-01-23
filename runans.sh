@@ -12,4 +12,4 @@ printf "vault_id_secret: " >> $DEST/secret.yml
 cat < ./.vault-id-secret.txt >> $DEST/secret.yml
 printf "\n" >> $DEST/secret.yml
 ansible-vault encrypt --encrypt-vault-id default --vault-password-file .vault-password.txt $DEST/secret.yml
-#ansible-playbook  playbook.yml -i  $DEST/hosts  --vault-password-file .vault-password.txt
+#ansible-playbook tflocal.yml -i  $DEST/hosts  --vault-password-file .vault-password.txt

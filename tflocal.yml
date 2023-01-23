@@ -47,7 +47,10 @@
 
   post_tasks:
     - name: Copy local tools to local_tool_dir
+      become: true
+      become_user: root
       copy:
-        src: "{{ galaxy_local_tools_src_dir }}/"
+        src: "{{ galaxy_local_tools_src_dir }}"
         dest: "{{ galaxy_local_tools_dir }}"
+        owner: "{{ galaxy_user.name }}"
 
