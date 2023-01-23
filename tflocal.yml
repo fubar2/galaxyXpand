@@ -52,7 +52,7 @@
 #    - { role: usegalaxy_eu.rabbitmq, become: yes }
     - role: galaxyproject.gxadmin
       become: yes
-      become_user: root}
+      become_user: root
 
   post_tasks:
     - name: Copy local tools to local_tool_dir

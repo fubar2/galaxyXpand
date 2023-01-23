@@ -4,14 +4,15 @@ groot: /evol/galaxylocal
 # this sets the installation destination
 
 # Galaxy
-
+galaxy_force_checkout: false
+# trying to gazump requirement for useless gravity version 1.0.0
+instance_name: DEVtoolfactory
 inventory_hostname: galaxy.genomicsvl-students.cloud.edu.au
 galaxy_manage_gravity: true
 galaxy_config_perms: 0664
 galaxy_root: "{{ groot }}"
 galaxy_user: {name: galaxy, shell: /bin/bash}
 galaxy_commit_id: dev
-galaxy_force_checkout: true
 galaxy_additional_venv_packages: false
 galaxy_create_user: true
 galaxy_manage_paths: true
@@ -41,7 +42,7 @@ galaxy_config:
     sanitize_all_html: false
     enable_tool_shed_check: true
     hours_between_check: 12
-    shed_data_manager_config_file:  "/home/{{ galaxy_user.name }}/shed_data_manager_conf.xml"
+    shed_data_manager_config_file:  "{{ galaxy_config_dir }}/shed_data_manager_conf.xml"
     statsd_host: localhost
     statsd_influxdb: true
     job_resource_params_file: "{{ galaxy_config_dir }}/job_resource_params_conf.xml"
@@ -91,6 +92,7 @@ galaxy_config:
   gravity:
     galaxy_root: "{{ galaxy_server_dir }}"
     app_server: gunicorn
+    instance_name: "DEV_Toolfactory"
     gunicorn:
       # listening options
       bind: "127.0.0.1:8080"
