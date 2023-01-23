@@ -1,4 +1,4 @@
-upstream tflocal {
+upstream galaxy {
     server localhost:8080;
     # Or if you serve galaxy at a path like http(s)://fqdn/galaxy
     # Remember to set galaxy_url_prefix in the galaxy.yml file.
@@ -19,7 +19,7 @@ server {
     # If you serve galaxy at a path like /galaxy, change that below (and all other locations!)
     location /tflocal {
         # This is the backend to send the requests to.
-        proxy_pass http://tflocal;
+        proxy_pass http://galaxy;
         proxy_read_timeout 600;
         proxy_set_header Host $http_host;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

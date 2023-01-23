@@ -1,2 +1,2 @@
 [tflocal]
-localhost ansible_connection=local ansible_sudo=yes
+galaxy.genomicsvl-students.cloud.edu.au ansible_connection=local ansible_sudo=yes

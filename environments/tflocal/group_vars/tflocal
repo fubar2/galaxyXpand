@@ -4,7 +4,7 @@ groot: /evol/galaxylocal
 # this sets the installation destination
 
 # Galaxy
-galaxy_url_prefix: /tflocal
+
 inventory_hostname: galaxy.genomicsvl-students.cloud.edu.au
 galaxy_manage_gravity: true
 galaxy_config_perms: 0664
@@ -37,6 +37,7 @@ miniconda_manage_dependencies: false
 
 galaxy_config:
   galaxy:
+    galaxy_url_prefix: /tflocal
     watch_tools: true
     sanitize_all_html: false
     enable_tool_shed_check: true
@@ -93,12 +94,12 @@ galaxy_config:
     app_server: gunicorn
     gunicorn:
       # listening options
-      bind: "0.0.0.0:8080"
+      bind: "localhost:8080"
       # "unix:{{ galaxy_config_dir }}/gunicorn.sock"
       # performance options
       workers: 2
       # Other options that will be passed to gunicorn
-      # extra_args: '--forwarded-allow-ips="*"'
+      extra_args: '--forwarded-allow-ips="*"'
       preload: true
       proxy_read_timeout: 600
     celery:
