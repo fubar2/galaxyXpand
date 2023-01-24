@@ -4,14 +4,15 @@ groot: /evol/galaxy
 # this sets the installation destination
 
 # Galaxy
+galaxy_integrated_tool_panel_config:  "{{ galaxy_config_dir }}/integrated_tool_panel.xml"
 galaxy_gravity_state_dir: "{{ galaxy_root }}/gravity"
 galaxy_manage_gravity: true
 galaxy_manage_paths: true
 galaxy_config_perms: 0664
 galaxy_root: "{{ groot }}"
 galaxy_user: {name: galaxy, shell: /bin/bash}
-galaxy_commit_id: dev
-galaxy_force_checkout: false
+galaxy_commit_id: release_22.05
+galaxy_force_checkout: true
 galaxy_additional_venv_packages: drmaa, watchdog
 galaxy_create_user: true
 galaxy_reports_path: "{{ galaxy_config_dir }}/reports.yml"
@@ -36,7 +37,6 @@ miniconda_manage_dependencies: false
 
 galaxy_config:
   galaxy:
-    integrated_tool_panel_config:  "{{ galaxy_config_dir }}/integrated_tool_panel.xml"
     watch_tools: true
     sanitize_all_html: false
     enable_tool_shed_check: true
