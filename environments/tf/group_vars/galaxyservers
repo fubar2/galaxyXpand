@@ -6,12 +6,13 @@ groot: /evol/galaxy
 # Galaxy
 galaxy_gravity_state_dir: "{{ galaxy_root }}/gravity"
 galaxy_manage_gravity: true
+galaxy_manage_paths: true
 galaxy_config_perms: 0664
 galaxy_root: "{{ groot }}"
 galaxy_user: {name: galaxy, shell: /bin/bash}
 galaxy_commit_id: dev
 galaxy_force_checkout: false
-galaxy_additional_venv_packages: drmaa
+galaxy_additional_venv_packages: drmaa, watchdog
 galaxy_create_user: true
 galaxy_reports_path: "{{ galaxy_config_dir }}/reports.yml"
 galaxy_separate_privileges: true
@@ -22,8 +23,10 @@ galaxy_mutable_data_dir:  "{{ galaxy_root }}/mutable_data"
 galaxy_mutable_config_dir: "{{ galaxy_root }}/mutable_config"
 galaxy_config_dir: "{{ galaxy_root }}/config"
 galaxy_config_file: "{{ galaxy_config_dir }}/galaxy.yml"
+# use trailing slash to copy all directories
+galaxy_local_tools_src_dir: "environments/tflocal/files/galaxy/tools/"
 galaxy_local_tools_dir: "{{ galaxy_root }}/local_tools"
-galaxy_local_tools_src_dir: "/home/ross/rossgit/galaxyXpand/environments/tf/files/galaxy/tools"
+#galaxy_local_tools_src_dir: "/home/ross/rossgit/galaxyXpand/environments/tf/files/galaxy/tools"
 galaxy_tool_config_file: tool_conf.xml, local_tool_conf.xml
 galaxy_tool_dependency_dir: "{{ galaxy_root}}/tool_dependencies"
 galaxy_manage_cleanup: yes  # Install a cron job to clean up Galaxy framework and job execution temporary
@@ -33,6 +36,7 @@ miniconda_manage_dependencies: false
 
 galaxy_config:
   galaxy:
+    integrated_tool_panel_config:  "{{ galaxy_config_dir }}/integrated_tool_panel.xml"
     watch_tools: true
     sanitize_all_html: false
     enable_tool_shed_check: true
@@ -127,12 +131,10 @@ galaxy_config_files:
   - src: "{{ gcf }}/reports.yml"
     dest: "{{ galaxy_reports_path }}"
 
-# want whole tool directories copied
-galaxy_local_tools:
-  - "toolfactory"
+
 
 # systemd
-galaxy_manage_systemd: true
+galaxy_manage_systemd: false
 galaxy_manage_systemd_reports: false
 galaxy_systemd_env: [DRMAA_LIBRARY_PATH="/usr/lib/slurm-drmaa/lib/libdrmaa.so.1"]
 
