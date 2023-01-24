@@ -4,12 +4,13 @@ groot: /evol/galaxy
 # this sets the installation destination
 
 # Galaxy
-
+galaxy_gravity_state_dir: "{{ galaxy_root }}/gravity"
+galaxy_manage_gravity: true
 galaxy_config_perms: 0664
 galaxy_root: "{{ groot }}"
 galaxy_user: {name: galaxy, shell: /bin/bash}
 galaxy_commit_id: dev
-galaxy_force_checkout: true
+galaxy_force_checkout: false
 galaxy_additional_venv_packages: drmaa
 galaxy_create_user: true
 galaxy_reports_path: "{{ galaxy_config_dir }}/reports.yml"
@@ -18,7 +19,7 @@ galaxy_privsep_user: "{{ galaxy_user.name }}"
 galaxy_layout: root-dir
 galaxy_server_dir: "{{ galaxy_root }}/galaxy"
 galaxy_mutable_data_dir:  "{{ galaxy_root }}/mutable_data"
-galaxy_mutable_config_dir: "{{ galaxy_server_dir }}/mutable_config"
+galaxy_mutable_config_dir: "{{ galaxy_root }}/mutable_config"
 galaxy_config_dir: "{{ galaxy_root }}/config"
 galaxy_config_file: "{{ galaxy_config_dir }}/galaxy.yml"
 galaxy_local_tools_dir: "{{ galaxy_root }}/local_tools"
@@ -88,7 +89,8 @@ galaxy_config:
     app_server: gunicorn
     gunicorn:
       # listening options
-      bind: "unix:{{ galaxy_config_dir }}/gunicorn.sock"
+      bind: localhost:8080
+      # bind:"unix:{{ galaxy_config_dir }}/gunicorn.sock"
       # performance options
       workers: 2
       # Other options that will be passed to gunicorn

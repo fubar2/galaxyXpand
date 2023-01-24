@@ -41,8 +41,6 @@
       become: true
       become_user: postgres
     - role: galaxyproject.galaxy
-      become: true
-      become_user: "{{ galaxy_user.name }}"
     - role: uchida.miniconda
       become: true
       become_user: "{{ galaxy_user.name }}"

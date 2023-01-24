@@ -22,8 +22,8 @@
           - liblzma-dev
 
   roles:
-    - cyverse-ansible.singularity
-# - vbotka.certificate
+
+
     - geerlingguy.pip
     - galaxyproject.postgresql
     - role: galaxyproject.postgresql_objects
@@ -39,6 +39,8 @@
     - usegalaxy_eu.rabbitmq
     - galaxyproject.cvmfs
     - galaxyproject.gxadmin
+    - cyverse-ansible.singularity
+# - vbotka.certificate
 #    - dj-wasabi.telegraf
 #    - galaxyproject.proftpd
 #    - galaxyproject.tusd
