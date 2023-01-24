@@ -49,7 +49,9 @@
     - role: galaxyproject.nginx
       become: yes
       become_user: root
-#    - { role: usegalaxy_eu.rabbitmq, become: yes }
+    - role: usegalaxy_eu.certbot
+      become: yes
+      become_user: root
     - role: galaxyproject.gxadmin
       become: yes
       become_user: root

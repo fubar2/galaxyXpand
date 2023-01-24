@@ -8,7 +8,7 @@ groot: /evol/galaxy
 galaxy_config_perms: 0664
 galaxy_root: "{{ groot }}"
 galaxy_user: {name: galaxy, shell: /bin/bash}
-galaxy_commit_id: d2a4339c8881e3fbcc2ac0b7f3ec7d67f98fff3e
+galaxy_commit_id: dev
 galaxy_force_checkout: true
 galaxy_additional_venv_packages: drmaa
 galaxy_create_user: true
@@ -24,7 +24,6 @@ galaxy_config_file: "{{ galaxy_config_dir }}/galaxy.yml"
 galaxy_local_tools_dir: "{{ galaxy_root }}/local_tools"
 galaxy_local_tools_src_dir: "/home/ross/rossgit/galaxyXpand/environments/tf/files/galaxy/tools"
 galaxy_tool_config_file: tool_conf.xml, local_tool_conf.xml
-#galaxy_tool_dependency_dir: "{{ galaxy_server }}/tool_dependencies"
 galaxy_manage_cleanup: yes  # Install a cron job to clean up Galaxy framework and job execution temporary
 miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda"
 miniconda_version: 4.7.12
